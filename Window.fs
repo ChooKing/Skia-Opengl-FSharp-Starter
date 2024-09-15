@@ -37,12 +37,11 @@ type Window(gameWindowSettings, nativeWindowSettings) =
         this.grContext.Dispose()
         this.grgInterface.Dispose()
         base.OnUnload()
-    override this.OnRenderFrame(args:FrameEventArgs) =
-        time <- time + args.Time
+    override this.OnRenderFrame(args:FrameEventArgs) =        
         this.canvas.Clear(SKColors.CornflowerBlue)
         this.TestBrush.Color <- SKColors.MediumSeaGreen      
-        this.canvas.DrawRoundRect(new SKRoundRect(SKRect(0f, 0f, 256f, 256f), (float32) (Math.Max ((Math.Sin -time) * 128.0, 0.0)), 3f), this.TestBrush)
+        this.canvas.DrawRoundRect(new SKRoundRect(SKRect(0f, 0f, 256f, 256f), 30f, 30f), this.TestBrush)
         this.TestBrush.Color <- SKColors.Black
-        this.canvas.DrawText("Hello, World!", 128f, 300f, this.TestBrush)
+        this.canvas.DrawText("Hello, World!", 128f, 30f, this.TestBrush)
         this.canvas.Flush();
         this.SwapBuffers()
