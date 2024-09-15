@@ -8,7 +8,7 @@ open SkiaSharp
 
 type Window(gameWindowSettings, nativeWindowSettings) =
     inherit GameWindow(gameWindowSettings, nativeWindowSettings)
-    
+    let mutable time = 0.0
     [<DefaultValue>]
     val mutable grgInterface: GRGlInterface
     [<DefaultValue>]
@@ -37,12 +37,14 @@ type Window(gameWindowSettings, nativeWindowSettings) =
         this.grContext.Dispose()
         this.grgInterface.Dispose()
         base.OnUnload()
-    override this.OnRenderFrame(args:FrameEventArgs) =        
-        this.canvas.Clear(SKColors.CornflowerBlue)
+    override this.OnRenderFrame(args:FrameEventArgs) =
+        time <- time + args.Time
+        let colorCode = float32 ((time * 30.0) % 360.0)
+        this.canvas.Clear(SKColor.FromHsl(colorCode, 50f, 50f))
         this.TestBrush.Color <- SKColors.MediumSeaGreen      
         this.canvas.DrawRoundRect(new SKRoundRect(SKRect(0f, 0f, 256f, 256f), 30f, 30f), this.TestBrush)
         this.TestBrush.Color <- SKColors.Black
-        this.canvas.DrawText("Hello, World!", 128f, 30f, this.TestBrush)
+        this.canvas.DrawText("Hello, World", 128f, 30f, this.TestBrush)
         this.canvas.Flush();
         this.SwapBuffers()
     override this.OnUpdateFrame(e) =
