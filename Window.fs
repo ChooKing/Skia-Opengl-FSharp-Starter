@@ -1,14 +1,14 @@
 ﻿module Window
 
-open System;
 open OpenTK.Windowing.Common;
 open OpenTK.Windowing.Desktop;
-open OpenTK.Graphics.OpenGL4;
+open OpenTK.Graphics.OpenGL4
+open OpenTK.Windowing.GraphicsLibraryFramework
 open SkiaSharp
 
 type Window(gameWindowSettings, nativeWindowSettings) =
     inherit GameWindow(gameWindowSettings, nativeWindowSettings)
-    let mutable time = 0.0
+    
     [<DefaultValue>]
     val mutable grgInterface: GRGlInterface
     [<DefaultValue>]
@@ -45,3 +45,12 @@ type Window(gameWindowSettings, nativeWindowSettings) =
         this.canvas.DrawText("Hello, World!", 128f, 30f, this.TestBrush)
         this.canvas.Flush();
         this.SwapBuffers()
+    override this.OnUpdateFrame(e) =
+        base.OnUpdateFrame(e)
+        let input = this.KeyboardState        
+        if (input.IsKeyDown Keys.Escape) then            
+            this.Close()
+            
+    override this.OnResize(e) =
+        base.OnResize e
+        GL.Viewport(0, 0, e.Width, e.Height)
